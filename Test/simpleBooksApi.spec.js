@@ -55,16 +55,15 @@ describe("First test", () => {
     }
   });
   it("Submit an order", async () => {
-   
     try {
       const response = await request(app)
         .post("/orders")
-        .set("Authorization", accessToken)
+        .set("Authorization", `Bearer ${accessToken}`)
         .send({
           bookId: 1,
           customerName: "John",
         });
-      expect(response.body.created).to.eq(true)
+      expect(response.body.created).to.eq(true);
       //console.log(response.body.created);
       orderId = response.body.orderId;
       console.log(orderId);
@@ -72,48 +71,43 @@ describe("First test", () => {
       throw error;
     }
   });
-  it('Get all orders',async()=>{
-    try{
+  it("Get all orders", async () => {
+    try {
       const response = await request(app)
-      .get('/orders')
-      .set('Authorization',accessToken)
-      expect(response.body[0].id).to.eq(orderId)
+        .get("/orders")
+        .set("Authorization", accessToken);
+      expect(response.body[0].id).to.eq(orderId);
       //console.log()
+    } catch (error) {
+      throw error;
     }
-    catch(error){
-      throw(error)
-    }
-  })
-  it('Update an order', async()=>{
-    try{
+  });
+  it("Update an order", async () => {
+    try {
       const response = await request(app)
-      .patch(`/orders/${orderId}`)
-      .set('Authorization',accessToken)
-      .send({
-        "customerName":"Bertina"
-      })
-      expect(204)
+        .patch(`/orders/${orderId}`)
+        .set("Authorization", accessToken)
+        .send({
+          customerName: "Bertina",
+        });
+      expect(204);
+    } catch (error) {
+      throw error;
     }
-    catch(error){
-      throw(error)
-    }
-  })
+  });
 
-  it('Get order after update',async()=>{
-    try{
-
+  it("Get order after update", async () => {
+    try {
       const response = await request(app)
-      .get(`/orders/${orderId}`)
-      .set('Authorization',accessToken)
-      expect(response.body.customerName).to.eq('Bertina')
+        .get(`/orders/${orderId}`)
+        .set("Authorization", accessToken);
+      expect(response.body.customerName).to.eq("Bertina");
+    } catch (error) {
+      throw error;
     }
-    catch(error){
-      throw(error)
-    }
-  })
-  it('Delete an order',async()=>{
-    const response = request(app)
-    .delete(`/orders/${orderId}`)
-    expect(204)
-  })
+  });
+  it("Delete an order", async () => {
+    const response = request(app).delete(`/orders/${orderId}`);
+    expect(204);
+  });
 });
